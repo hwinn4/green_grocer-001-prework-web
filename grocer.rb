@@ -20,15 +20,12 @@ def consolidate_cart(cart:[])
       end
     end
   end
-  #binding.pry
   new_grocery_hash
-  # final_grocery_hash = {}
-  # final_grocery_hash[:cart] = new_grocery_hash
-  # final_grocery_hash
 end
 
 # COMPLETE
 def apply_coupons(cart:[], coupons:[])
+  #binding.pry
   #### ADD EACH COUPON TO CART ####
   coupons.each do |i|
    # has the coupon already been applied to the cart?
@@ -77,8 +74,76 @@ end
 
 
 def checkout(cart: [], coupons: [])
-  # code here
-  consolidate_cart(cart)
+  # initial total is 0
+  total = 0
+  # consolidate the cart
+  con_cart = consolidate_cart(cart: cart)
+  con_cart.each do |item, info|
+    # adjust the price of items with a count greater than 1
+    if info[:count] > 1
+      info[:price] = info[:price].to_f * info[:count].to_f
+    end 
+    # total the current prices of each item, before coupons and discounts
+    total = total + info[:price]
+  end
 
+  # apply coupons to the consolidated cart
+  total_after_coupons = apply_coupons(cart: con_cart, coupons: coupons)
+  total = 0
+  total_after_coupons.each do |item, info|
+    # add the prices of each item, after coupons have been applied
+    if info[:count].to_i > 0 
+      #binding.pry
+      total = total + info[:price]
+    end
+  end
+  # adjust price for clearance items
+  total_after_clearance = apply_clearance(cart: total_after_coupons)
+  total = 0
+  # total up the prices, after clearance
+  total_after_clearance.each do |item, info|
+    if info[:count].to_i > 0 
+      total = total + info[:price]
+    end
+  end
 
+  # apply final discount for carts over $100
+  if total > 100
+    extra_discount = total * 0.10
+    total = total - extra_discount
+  end
+  # return the final total 
+  total
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
