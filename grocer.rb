@@ -3,15 +3,15 @@ require "pry"
 # method 1: consolidate_cart
 # complete
 def consolidate_cart(cart: [])
-  cart_keys = {}
-
+  new_cart = {}
   # make a hash to count the frequency of foods in the cart
   cart.each do |i|
     i.each do |f,deets|
-      if cart_keys.include?(f) == false 
-        cart_keys[f] = 1
+      #binding.pry
+      if cart.include?(f) == false
+        deets[:count] = 1
       else
-        cart_keys[f] = cart_keys[f] + 1
+        deets[:count] += 1 
       end
     end
   end
@@ -93,15 +93,16 @@ end
 
 # method 4: checkout
 def checkout(cart:[],coupons:[])
-  checkout_total = 0
-  if cart.length >= 1
+  
+  #if cart.length >= 1
     con_cart = consolidate_cart(cart:cart)
     cart_with_coupons = apply_coupons(cart:con_cart,coupons:[])
     cart_after_clearance = apply_clearance(cart: cart_with_coupons)
+    checkout_total = 0
     cart_after_clearance.each do |food, info|
-      checkout_total = checkout_total + info[:price]
+      checkout_total += info[:price] * info[:count]
     end
-  end
+  #end
   if checkout_total > 100
     checkout_total = checkout_total - (checkout_total * 0.10)
   end
