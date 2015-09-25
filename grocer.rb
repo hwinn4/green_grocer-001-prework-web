@@ -57,7 +57,6 @@ end
 # take 20% off of clearance items
 def apply_clearance(cart: [])
   cart.each do |food, info|
-      #binding.pry
       if info[:clearance] == true
         info[:price] = info[:price] - (info[:price] * 0.20)
       end
@@ -66,16 +65,13 @@ end
 
 # method 4: checkout
 def checkout(cart:[],coupons:[])
-  
-  #if cart.length >= 1
-    con_cart = consolidate_cart(cart:cart)
-    cart_with_coupons = apply_coupons(cart:con_cart,coupons:coupons)
-    cart_after_clearance = apply_clearance(cart: cart_with_coupons)
-    checkout_total = 0
-    cart_after_clearance.each do |food, info|
-      checkout_total += info[:price] * info[:count]
-    end
-  #end
+  con_cart = consolidate_cart(cart:cart)
+  cart_with_coupons = apply_coupons(cart:con_cart,coupons:coupons)
+  cart_after_clearance = apply_clearance(cart: cart_with_coupons)
+  checkout_total = 0
+  cart_after_clearance.each do |food, info|
+    checkout_total += info[:price] * info[:count]
+  end
   if checkout_total > 100
     checkout_total = checkout_total - (checkout_total * 0.10)
   end
