@@ -19,6 +19,7 @@ def consolidate_cart(cart:[])
       end
     end
   end
+  binding.pry
   new_grocery_hash
 end
 
