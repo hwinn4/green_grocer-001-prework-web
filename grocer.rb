@@ -1,6 +1,5 @@
 require "pry"
 # COMPLETE
-
 def consolidate_cart(cart:[])
   # variables for later
   new_grocery_hash = {}
@@ -81,6 +80,7 @@ def checkout(cart: [], coupons: [])
   con_cart.each do |item, info|
     # adjust the price of items with a count greater than 1
     if info[:count] > 1
+      binding.pry
       info[:price] = info[:price].to_f * info[:count].to_f
     end 
     # total the current prices of each item, before coupons and discounts
