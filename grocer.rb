@@ -1,55 +1,28 @@
 require "pry"
 
 # method 1: consolidate_cart
-# complete
-def consolidate_cart(cart: [])
-  new_cart = {}
-  # make a hash to count the frequency of foods in the cart
-  cart.each do |i|
-    i.each do |f,deets|
-      #binding.pry
-      if cart.include?(f) == false
-        deets[:count] = 1
+# COMPLETE
+def consolidate_cart(cart:[])
+  # variables for later
+  new_grocery_hash = {}
+  # iterate over each item in the orignial cart
+  cart.each do |item|
+    # iterate over the k:v pairs in the original cart hash
+    item.each do |food,data|
+      # add the old items to the new hash
+      if new_grocery_hash.member?(food) != true
+        new_grocery_hash[food] = data
+        # include a count of the new item
+        data.store(:count, 1)
       else
-        deets[:count] += 1 
+        # incremement the count of an existing item
+        new_grocery_hash[food][:count] = new_grocery_hash[food][:count] + 1
       end
     end
   end
-
-  # use cart_keys to assign a count to all foods 
-  cart_keys.each do |food,count|
-    if count > 1
-      #binding.pry
-      cart.each do |i|
-        i.each do |k,v|
-          if k == food
-            v[:count] = count
-          end
-        end
-      end
-    else
-      cart.each do |item|
-        item.each do |fd,info|
-          if info.keys.include?(:count) == false
-            info[:count] = 1
-          end
-        end
-      end
-    end
-  end
-
-  # make a new hash that lists each food item (including its count) only once
-  cart_rehashed = {}
-  cart.each do |food_item|
-    food_item.each do |name,stats|
-      if cart_rehashed.include?(stats) == false
-        cart_rehashed[name] = stats
-      end
-    end
-  end
-  #binding.pry
-  cart_rehashed
+  new_grocery_hash
 end
+
 
 # method 2: apply_coupons
 def apply_coupons(cart:[], coupons: [])
@@ -96,7 +69,7 @@ def checkout(cart:[],coupons:[])
   
   #if cart.length >= 1
     con_cart = consolidate_cart(cart:cart)
-    cart_with_coupons = apply_coupons(cart:con_cart,coupons:[])
+    cart_with_coupons = apply_coupons(cart:con_cart,coupons:coupons)
     cart_after_clearance = apply_clearance(cart: cart_with_coupons)
     checkout_total = 0
     cart_after_clearance.each do |food, info|
